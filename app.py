@@ -20,9 +20,9 @@ def get_current_day():
     return days[current_weekday]
 
 def format_meal(meal_text):
-    # Remplacer chaque quantité par la même quantité suivie d'un retour à la ligne
-    formatted = re.sub(r'(\d+[g]?\s+[^+]+)(\s*\+\s*)?', r'\1\n', meal_text)
-    return formatted.strip()
+    # Séparer les ingrédients et ajouter des retours à la ligne
+    ingredients = meal_text.split(" + ")
+    return "\n".join(ingredients)
 
 def main():
     # Configuration de la page
