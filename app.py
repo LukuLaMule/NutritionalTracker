@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
+import re
 from data import repas, data_tuna
 
 def get_current_day():
@@ -19,8 +20,9 @@ def get_current_day():
     return days[current_weekday]
 
 def format_meal(meal_text):
-    # Remplacer les + par des retours à la ligne HTML
-    return meal_text.replace(" + ", "<br>")
+    # Remplacer chaque quantité par la même quantité suivie d'un retour à la ligne
+    formatted = re.sub(r'(\d+[g]?\s+[^+]+)(\s*\+\s*)?', r'\1\n', meal_text)
+    return formatted.strip()
 
 def main():
     # Configuration de la page
@@ -34,7 +36,7 @@ def main():
     # Titre de l'application
     st.title("🍽️ Plan Nutritionnel Hebdomadaire")
 
-    # Création du DataFrame avec formatage HTML
+    # Création du DataFrame avec formatage
     df_data = {day: [format_meal(meal) for meal in meals] for day, meals in data_tuna.items()}
     df_tuna = pd.DataFrame(df_data, index=repas)
 
@@ -59,7 +61,7 @@ def main():
         # Affichage des repas du jour sélectionné dans un format plus compact
         for meal, content in zip(repas, data_tuna[selected_day]):
             st.markdown(f"**{meal}**")
-            st.write(content.replace(" + ", "\n"))
+            st.write(format_meal(content))
             st.write("---")
 
     with col2:
