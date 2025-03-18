@@ -18,6 +18,10 @@ def get_current_day():
     current_weekday = datetime.now().weekday()
     return days[current_weekday]
 
+def format_meal(meal_text):
+    # Remplacer les + par des retours à la ligne HTML
+    return meal_text.replace(" + ", "<br>")
+
 def main():
     # Configuration de la page
     st.set_page_config(
@@ -30,8 +34,9 @@ def main():
     # Titre de l'application
     st.title("🍽️ Plan Nutritionnel Hebdomadaire")
 
-    # Création du DataFrame
-    df_tuna = pd.DataFrame(data_tuna, index=repas)
+    # Création du DataFrame avec formatage HTML
+    df_data = {day: [format_meal(meal) for meal in meals] for day, meals in data_tuna.items()}
+    df_tuna = pd.DataFrame(df_data, index=repas)
 
     # Obtenir le jour actuel
     current_day = get_current_day()
@@ -54,7 +59,7 @@ def main():
         # Affichage des repas du jour sélectionné dans un format plus compact
         for meal, content in zip(repas, data_tuna[selected_day]):
             st.markdown(f"**{meal}**")
-            st.write(content)
+            st.write(content.replace(" + ", "\n"))
             st.write("---")
 
     with col2:
@@ -66,6 +71,10 @@ def main():
             .stDataFrame {
                 width: 100%;
                 max-width: none !important;
+            }
+            .stDataFrame td {
+                white-space: pre-wrap !important;
+                line-height: 1.5 !important;
             }
             </style>
             """, 
