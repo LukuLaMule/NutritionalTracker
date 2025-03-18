@@ -1,6 +1,22 @@
 import streamlit as st
 import pandas as pd
+from datetime import datetime
 from data import repas, data_tuna
+
+def get_current_day():
+    # Obtenir le jour actuel en français
+    days = {
+        0: "Lundi",
+        1: "Mardi", 
+        2: "Mercredi",
+        3: "Jeudi",
+        4: "Vendredi",
+        5: "Samedi",
+        6: "Dimanche"
+    }
+    # Ajuster pour que lundi soit 0
+    current_weekday = datetime.now().weekday()
+    return days[current_weekday]
 
 def main():
     # Configuration de la page
@@ -12,14 +28,18 @@ def main():
 
     # Titre de l'application
     st.title("🍽️ Plan Nutritionnel Hebdomadaire")
-    
+
     # Création du DataFrame
     df_tuna = pd.DataFrame(data_tuna, index=repas)
 
-    # Sélecteur de jour
+    # Obtenir le jour actuel
+    current_day = get_current_day()
+
+    # Sélecteur de jour avec le jour actuel par défaut
     selected_day = st.selectbox(
         "Sélectionner un jour",
-        options=list(data_tuna.keys())
+        options=list(data_tuna.keys()),
+        index=list(data_tuna.keys()).index(current_day)
     )
 
     # Affichage des deux vues
@@ -27,6 +47,9 @@ def main():
 
     with col1:
         st.subheader(f"Repas du {selected_day}")
+        if selected_day == current_day:
+            st.info(f"📅 C'est le menu d'aujourd'hui !")
+
         for meal, content in zip(repas, data_tuna[selected_day]):
             st.markdown(f"**{meal}**")
             st.write(content)
@@ -34,6 +57,7 @@ def main():
 
     with col2:
         st.subheader("Planning hebdomadaire complet")
+        # Mettre en surbrillance la ligne du jour actuel
         st.dataframe(
             df_tuna,
             use_container_width=True,
