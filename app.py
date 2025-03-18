@@ -23,7 +23,8 @@ def main():
     st.set_page_config(
         page_title="Calendrier Nutritionnel",
         page_icon="🍽️",
-        layout="wide"
+        layout="wide",
+        initial_sidebar_state="collapsed"
     )
 
     # Titre de l'application
@@ -42,7 +43,7 @@ def main():
         index=list(data_tuna.keys()).index(current_day)
     )
 
-    # Affichage des deux vues
+    # Ajustement des colonnes pour un meilleur affichage
     col1, col2 = st.columns([1, 2])
 
     with col1:
@@ -50,6 +51,7 @@ def main():
         if selected_day == current_day:
             st.info(f"📅 C'est le menu d'aujourd'hui !")
 
+        # Affichage des repas du jour sélectionné dans un format plus compact
         for meal, content in zip(repas, data_tuna[selected_day]):
             st.markdown(f"**{meal}**")
             st.write(content)
@@ -57,14 +59,17 @@ def main():
 
     with col2:
         st.subheader("Planning hebdomadaire complet")
-        # Mettre en surbrillance la ligne du jour actuel
+        # Ajuster la hauteur pour éviter le scroll
         st.dataframe(
-            df_tuna,
+            df_tuna.style.set_properties(**{
+                'white-space': 'pre-wrap',
+                'text-align': 'left'
+            }),
             use_container_width=True,
-            height=400
+            height=600  # Augmenter la hauteur pour éviter le scroll
         )
 
-    # Informations supplémentaires
+    # Informations supplémentaires en bas de page
     st.markdown("### Notes importantes")
     st.info("""
     - Les repas sont adaptés pour un déficit calorique
