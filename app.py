@@ -74,7 +74,7 @@ def main():
 
         # Formater le DataFrame pour un meilleur affichage
         styled_df = df_tuna.style.set_properties(**{
-            'white-space': 'normal',
+            'white-space': 'pre-wrap',
             'text-align': 'left',
             'max-width': '150px',
             'width': '100%'
