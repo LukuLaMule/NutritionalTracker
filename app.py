@@ -59,14 +59,30 @@ def main():
 
     with col2:
         st.subheader("Planning hebdomadaire complet")
-        # Ajuster la hauteur pour éviter le scroll
+        # Optimiser l'affichage du tableau
+        st.write(
+            """
+            <style>
+            .stDataFrame {
+                width: 100%;
+                max-width: none !important;
+            }
+            </style>
+            """, 
+            unsafe_allow_html=True
+        )
+
+        # Formater le DataFrame pour un meilleur affichage
+        styled_df = df_tuna.style.set_properties(**{
+            'white-space': 'normal',
+            'text-align': 'left',
+            'max-width': '150px',
+            'width': '100%'
+        })
+
         st.dataframe(
-            df_tuna.style.set_properties(**{
-                'white-space': 'pre-wrap',
-                'text-align': 'left'
-            }),
-            use_container_width=True,
-            height=600  # Augmenter la hauteur pour éviter le scroll
+            styled_df,
+            use_container_width=True
         )
 
     # Informations supplémentaires en bas de page
