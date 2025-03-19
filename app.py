@@ -96,13 +96,13 @@ def main():
             use_container_width=True
         )
 
-    # Informations supplémentaires en bas de page
-    st.markdown("### Notes importantes")
-    st.info("""
-    - Les repas sont adaptés pour un déficit calorique
-    - Le dîner alterne entre steak haché et thon frais selon les jours
-    - Tous les repas incluent les portions recommandées
-    """)
+        # Informations supplémentaires en bas de page
+        st.markdown("### Notes importantes")
+        st.info("""
+        - Les repas sont adaptés pour un déficit calorique
+        - Le dîner alterne entre steak haché et thon frais selon les jours
+        - Tous les repas incluent les portions recommandées
+        """)
 
 if __name__ == "__main__":
     main()
