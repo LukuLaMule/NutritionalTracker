@@ -41,10 +41,10 @@ def main():
     col1, col2 = st.columns([1, 2])
 
     with col1:
-        selected_day = st.selectbox(
+        selected_day = st.select_slider(
             "Sélectionner un jour",
             options=list(data_tuna.keys()),
-            index=list(data_tuna.keys()).index(current_day)
+            value=current_day
         )
 
         st.subheader(f"Repas du {selected_day}")
